@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    </style> 
+</head>
+<body>
+    <header>
+        <div class="logo">
+            UToledoMail
+        </div>
+    </header>
+    <form action="login" method="post">
+        <label for="Username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="Password">Password</label>
+        <input type="password" name="password" id="password">
+        <button type="submit" id="login">Log In</button>
+    </form>
+    <style>
+        *{
+            font-family: Poppins, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        height: 110px;
+        padding: 0 5%;
+        color: #000000;
+        font-size: 18px;
+        }
+        .logo{
+            color:#000000;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-right: auto;
+        }
+        form{
+            margin-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+            align-items: center;
+            padding: 0.3rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        button,input{
+            background-color: #000000;
+            padding: 0.3rem 1.5rem;
+            color: white;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        button:hover{
+            background: transparent;
+            border-color: #000000;
+            color: #000000;
+        }
+    </style>
+    <script>
+        
+    </script>
+</body>
+</html>

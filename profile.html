@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    </style> 
+</head>
+<body>
+    <nav>
+        <span class="logo">UToledo Mail</span>
+    </nav>
+    <div class="main">
+    <div id="compose" hidden>
+        <form action="send" method="post" id="form">
+            <label for="to">To:</label>
+            <input type="email" name="to" id="to" required>
+            <label for="subject">Subject</label>
+            <input type="text" name="subject" id="subject" required>
+            <label for="body">Message</label>
+            <input type="textfield" name="text" id="text" rows="4" required>
+            <button type="submit" id="send">Send</button>
+            <button type="button" id="back">Back</button>
+        </form>
+    </div>
+    <div class="btns">
+        <button id="composeBtn">Compose Email</button>
+    </div>
+    <div class="emails" id="emails">
+
+    </div>
+</div>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+            overflow-y: hidden;
+        }
+        .show{
+            display: flex;
+        }
+        .show-email{
+            position: absolute;
+            top:5rem;
+            min-width: 100%;
+            min-height: calc(100vh - 5rem);
+            align-items: center;
+            background: white;
+        }
+        .hide{
+            display: none;
+        }
+        a{
+            text-decoration: none;
+        }
+        nav{
+        height: 5rem;
+        background-color: black;
+        padding: 0 24px 0 0;
+        display: flex;
+        align-items: center;
+        grid-gap: 24px;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        }
+        nav .logo{
+            margin-left: 1rem;
+            color:white;
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-right: auto;
+        }
+        div#compose.show{
+            margin-left: 38%;
+        }
+        .main form{
+            margin-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+            align-items: center;
+            padding: 0.3rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        .main .btns{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main button,.main input, #email button{
+            background-color: black;
+            padding: 0.3rem 1.5rem;
+            color: white;
+            outline: none;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        .main #send{
+            background-color: rgb(97, 201, 97);
+        }
+        .main #send:hover{
+            background: transparent;
+            border-color: rgb(97, 201, 97);
+            color: rgb(97, 201, 97);
+        }
+        #email button.deleteBtn{
+            max-width: fit-content;
+            background-color: rgb(239, 85, 85);
+        }
+        #email button.printBtn{
+            max-width: fit-content;
+            background-color: rgb(85, 195, 239);
+        }
+        .main input{
+            min-width: 50%;
+        }
+        .main button:hover{
+            background: transparent;
+            border-color: black;
+            color: black;
+        }
+        #email button.deleteBtn:hover{
+            background: transparent;
+            border-color: rgb(239, 85, 85);
+            color: rgb(183, 240, 136);
+        }
+        #email button.printBtn:hover{
+            background: transparent;
+            border-color: rgb(85, 195, 239);
+            color: rgb(85, 195, 239);
+        }
+    </style>
+
+<script>
+    let data = ""
+    const emails = document.getElementById("emails")
+    const btn = document.getElementById("send")
+    const composeBtn = document.getElementById("composeBtn")
+    const composeContainer = document.getElementById("compose")
+    const backBtn = document.getElementById("back")
+    
+    
+    async function loadEmails(){
+        const res = await fetch("/getEmails")
+        data = await res.json()
+        for(let i=0;i<data.length;i++){
+            
+            const email = document.createElement("div")
+            email.setAttribute("id","email")
+            
+            const time = document.createElement("span")
+            time.innerText = data[i].timestamp
+
+            const from = document.createElement("span")
+            from.innerText = "To: "+data[i].to_email
+
+            const subject = document.createElement("span")
+            subject.innerText = "Subject: " +data[i].subject
+
+            const message = document.createElement("p")
+            message.innerText = data[i].message
+            
+            const deleteForm = document.createElement("form")
+            const printBtn = document.createElement("button")
+            const deleteBtn = document.createElement("button")
+
+            printBtn.setAttribute("class","printBtn")
+            printBtn.innerText = "Print"
+            deleteBtn.setAttribute("class","deleteBtn")
+            deleteBtn.innerText = "Delete"
+            deleteBtn.setAttribute("type","submit")
+
+            deleteForm.appendChild(printBtn)
+            deleteForm.appendChild(deleteBtn)
+
+            printBtn.addEventListener('click',()=>{
+                window.print()
+            })
+            deleteBtn.addEventListener('click',()=>{
+                deleteEmail(email.firstChild.innerText)
+            })
+
+            emails.appendChild(email)
+            email.appendChild(time)
+            email.appendChild(from)
+            email.appendChild(subject)
+            email.appendChild(message)
+            email.appendChild(deleteForm)
+            email.classList.toggle('show')
+            if(i%2==0){
+                email.style.cssText =`
+                flex-direction:column;
+                background: rgb(182, 141, 247)`
+            }
+            else{
+                email.style.cssText =`
+                flex-direction:column;
+                background: rgb(183, 240, 136)`
+            }
+            deleteForm.style.cssText=`
+            margin:0`
+        }
+        const emailDivs = document.querySelectorAll('#email')
+        emailDivs.forEach(emailDiv =>{
+            emailDiv.addEventListener('click',()=>{
+                
+                emailDiv.classList.toggle('show-email')
+                console.log("clicked : " ,emailDiv)
+                
+            })
+        })
+    }
+
+    loadEmails() 
+    async function deleteEmail(id){
+        await fetch(`/delete/${id}`)
+    }
+
+    function goToEmail(){
+        emails.classList.toggle('hide')
+        composeBtn.classList.toggle('hide')
+    }
+
+    backBtn.addEventListener('click',()=>{
+        composeContainer.classList.toggle('show')
+        emails.classList.toggle('hide')
+        composeBtn.classList.toggle('hide')
+    })
+    composeBtn.addEventListener('click',()=>{
+        composeContainer.classList.toggle('show')
+        emails.classList.toggle('hide')
+        composeBtn.classList.toggle('hide')
+    })
+    </script>
+</body>
+</html>
