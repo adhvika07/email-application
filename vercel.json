@@ -3,6 +3,8 @@
         {"source": "/(.*)", "destination": "/"}
     ]
     {
-  "buildCommand": "next build"
+        "buildCommand": "next build"
+        "cleanUrls": true
 }
+
 }
