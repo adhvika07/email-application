@@ -2,11 +2,6 @@
     "rewrites": [
         {"source": "/(.*)", "destination": "/"}
     ]
-    {
-        "buildCommand": "next build"
-        "cleanUrls": true
-        { "framework": "nextjs"
-}
-}
+
 
 }
